@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Extra Feature</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>My “Extra” Feature</h1>
+    <div>
+      <p>I learned how to make sparkles like the ones that you can see in the background, using CSS and javascript.</p>
+    </div>
+    <div>
+      <img src="https://i.imgur.com/nPcFDek.png">
+    </div>
+    <div>
+      <p>
+      "position: fixed" so the sparkles stay in place regardless of scrolling
+      <br>
+      "bottom: 0" so it starts at the bottom
+      <br>
+      "width: 6px" / "height: 6px" to determine size
+      <br>
+      "border-radius:50%" to make them round
+      <br>
+      "background: radial-gradient(circle, #ffb0e9 0%, transparent 70%)" gives it the glowing effect by making the inner circle a brighter pink and slowly fading as it gets farther away from the center
+      <br>
+      "animation: rise linear infnite" references the @keyframes block named rise, tells the sparkles to move at a constant speed, and to do so infinitely, restarting once it reaches the end
+      <br>
+      "pointer-events: none" prevents the sparkles from being clicked so they don't interfere on the page
+      <br>
+      "opacity: 0.8" makes the sparkles slightly see-through
+      </p>
+    </div>
+    <div>
+      <img src="https://i.imgur.com/GoWdjyn.png">
+    </div>
+    <div>
+      <p>
+      "0%{ transform: translateY(0) scale(0.5)" at the beginning of the animation, start at the bottom at half normal size
+      <br>
+      "opacity: 1" starts fully visible
+      <br>
+      "80% { opacity: 1" prevents fade until 80% way through the animation
+      <br>
+      "100% { transform: translateY(-110vh) scale(1)" defines the end as 110% the height of the screen. It will grow to its full scale(1) by the end.
+      <br>
+      "opacity: 0" by the end, it should be fully transparent
+      </p>
+    </div>
+    <div>
+      <img src="https://i.imgur.com/dd0UA2N.png">
+    </div>
+    <div>
+      <p>
+      "document.addEventListener('DOMContentLoaded', function() {" when the content of the page has loaded, run the function
+      <br>
+      "for (let i = 0; i < 60; i++) {" loops 60 times (creates 60 sparkles)
+      <br>
+      "const s = document.createElement('div')" creates a div element in memory called 's'
+      <br>
+      "s.className = 'sparkle'" gives the 's' element the attributes of the 'sparkle' class
+      <br>
+      "s.style.left = Math.random() * 100 + 'vw'" generates a random number between 1 and 100 that determines how far from the left each sparkle will start (i.e. 60% = 60% of the screen width from the left)
+      <br>
+      "s.style.animationDelay = Math.random() * 10 + 's'" sets a random wait time between 1 and 10 seconds before the animation starts
+      <br>
+      "s.style.animationDuration = (8 + Math.random() * 6) + 's'" determines the sparkles speed by generating a random number from 0-6 + 8
+      <br>
+      "document.body.appendChild(s)" attaches the sparkle to the body of the page
+      </p>
+    </div>
+ <a href="index.html">← Back Home</a>
+<script src="extra.js"></script>
+</body>
+</html>

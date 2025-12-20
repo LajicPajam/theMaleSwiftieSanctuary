@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join Us | The Male Swiftie Sanctuary</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="music-control" title="Toggle Music">🎧</div>
+
+  <header>
+    <h1>The Male Swiftie Sanctuary</h1>
+    <h2>Join the Brotherhood of Broken Hearts</h2>
+  </header>
+
+  <section class="join">
+    <div class="form-container">
+      <h3>Become a Member</h3>
+      <form id="joinForm">
+        <label for="fname">First Name</label>
+        <input type="text" id="fname" name="fname" required />
+
+        <label for="lname">Last Name</label>
+        <input type="text" id="lname" name="lname" required />
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="song">Favorite Taylor Swift Song</label>
+        <input type="text" id="song" name="song" placeholder="All Too Well (10 Minute Version) ❤️" required />
+
+        <button type="submit">Join the Sanctuary</button>
+      </form>
+    </div>
+
+    <div class="member-list">
+      <h3>Our Swifties</h3>
+      <ul id="memberList"></ul>
+    </div>
+  </section>
+
+  <section class="cta">
+    <a href="index.html">← Back to Home</a>
+  </section>
+
+  <footer>
+    <p>© 2025 The Male Swiftie Sanctuary — All Feelings Reserved</p>
+  </footer>
+
+  <script src="extra.js"></script>
+  <script>
+    const form = document.getElementById("joinForm");
+    const memberList = document.getElementById("memberList");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const fname = document.getElementById("fname").value.trim();
+      const lname = document.getElementById("lname").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const song = document.getElementById("song").value.trim();
+
+      if (!fname || !lname || !email || !song) return;
+
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <strong>${fname} ${lname}</strong> — <em>${song}</em><br>
+        <span class="email">${email}</span>
+      `;
+
+      memberList.appendChild(li);
+      form.reset();
+    });
+  </script>
+
+</body>
+</html>

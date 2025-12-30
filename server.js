@@ -5,6 +5,7 @@ const cors = require('cors');
 const path = require('path');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
+const pgSession = require('connect-pg-simple')(session);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -40,6 +41,10 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(session({
+  store: new pgSession({
+    pool: pool,
+    tableName: 'session'
+  }),
   secret: process.env.SESSION_SECRET || 'swiftie-sanctuary-secret-key-change-in-production',
   resave: false,
   saveUninitialized: false,

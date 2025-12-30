@@ -159,10 +159,6 @@ app.post('/api/logout', (req, res) => {
 
 // Check auth status
 app.get('/api/auth/status', (req, res) => {
-  console.log('Auth status check - Session ID:', req.sessionID);
-  console.log('Auth status check - Session data:', req.session);
-  console.log('Auth status check - Cookies:', req.headers.cookie);
-  
   if (req.session && req.session.userId) {
     res.json({
       authenticated: true,

@@ -22,8 +22,20 @@ const pool = new Pool({
 });
 
 // Middleware
+const allowedOrigins = [
+  'http://localhost:3000',
+  process.env.RENDER_EXTERNAL_URL || 'https://themaleswiftiesanctuary.onrender.com'
+];
+
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      return callback(null, false);
+    }
+    return callback(null, true);
+  },
   credentials: true
 }));
 app.use(express.json());
@@ -32,9 +44,10 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: false, // Set to true if using HTTPS
+    secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
   }
 }));
 
@@ -315,6 +328,11 @@ app.delete('/api/members/:id', requireAuth, requireAdmin, async (req, res) => {
     console.error('Error deleting member:', error);
     res.status(500).json({ error: 'Failed to delete member' });
   }
+});
+
+// Serve index.html for root path
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.listen(PORT, () => {

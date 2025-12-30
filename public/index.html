@@ -8,7 +8,15 @@
 </head>
 <body>
 
-<div id="music-control" title="Toggle Music">🎧</div>
+<nav class="navbar">
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="script.html">Join Us</a></li>
+    <li><a href="pages/about.html">About</a></li>
+    <li id="adminNavItem" style="display: none;"><a href="pages/admin.html">Admin</a></li>
+    <li id="logoutNavItem" style="display: none;"><a href="#" id="logoutBtn">Logout</a></li>
+  </ul>
+</nav>
 
 <header>
   <h1>The Male Swiftie Sanctuary</h1>
@@ -29,18 +37,27 @@
   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRnf2lQSH2tdrT--IUJbPH7dHOE8Zsm-UEBQ&s">
 </section>
 
-<!-- Call-to-action link -->
-<section class="cta">
-  <p>
-    <a href="script.html" target="_blank">Need a place to talk about your heart being sliced in two like a hot knife to butter?
-    We're here for you, and so is Taylor.</a>
-    <br><br>
-    <!-- <a href="mysql.html">MySQL Stuff</a>
-    <br>
-    <a href="extra.html">Extra</a>
-    <br> -->
-    <a href="pages/about.html">About</a>
-  </p>
+<!-- Testimonials Section -->
+<section class="testimonials">
+  <h3>What Our Members Say</h3>
+  <div class="testimonial-container">
+    <div class="testimonial">
+      <p>"After listening to 'My Tears Ricochet' for the 47th time in a row, I finally found others who understand. This sanctuary saved my life."</p>
+      <span>— Brad, 28, Accountant</span>
+    </div>
+    <div class="testimonial">
+      <p>"I used to hide my Taylor Swift vinyl collection from my roommates. Now I blast 'Cruel Summer' at 3 AM and nobody judges me. Thank you, Male Swiftie Sanctuary."</p>
+      <span>— Derek, 34, Software Engineer</span>
+    </div>
+    <div class="testimonial">
+      <p>"My ex said I was 'too emotional' for crying during 'Soon You'll Get Better.' Here, crying during 'Soon You'll Get Better' is basically the membership requirement."</p>
+      <span>— Jason, 25, Barista</span>
+    </div>
+    <div class="testimonial">
+      <p>"I've memorized every bridge, decoded every Easter egg, and learned the entire 'Shake It Off' choreography. This is where I belong."</p>
+      <span>— Marcus, 31, Personal Trainer</span>
+    </div>
+  </div>
 </section>
 
 <footer>
@@ -48,5 +65,46 @@
 </footer>
 
 <script src="extra.js"></script>
+<script>
+  // Check if user is admin to show admin link and logout button
+  const API_URL = 'http://localhost:3000/api';
+  
+  async function checkAuthStatus() {
+    try {
+      const response = await fetch(`${API_URL}/auth/status`, {
+        credentials: 'include'
+      });
+      const data = await response.json();
+      
+      if (data.authenticated) {
+        document.getElementById('logoutNavItem').style.display = 'block';
+        if (data.role === 'admin') {
+          document.getElementById('adminNavItem').style.display = 'block';
+        }
+      }
+    } catch (error) {
+      console.log('Not authenticated');
+    }
+  }
+  
+  // Logout handler
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      try {
+        await fetch(`${API_URL}/logout`, {
+          method: 'POST',
+          credentials: 'include'
+        });
+        window.location.replace('pages/login.html');
+      } catch (error) {
+        console.error('Logout error:', error);
+      }
+    });
+  }
+  
+  checkAuthStatus();
+</script>
 </body>
 </html>

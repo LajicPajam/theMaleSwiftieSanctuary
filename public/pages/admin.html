@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - The Male Swiftie Sanctuary</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../script.html">Join Us</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="admin.html" class="active">Admin</a></li>
+            <li><a href="#" id="logoutBtn">Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="admin-container">
+        <h1>Admin Dashboard</h1>
+        <p class="admin-subtitle">Manage Sanctuary Users</p>
+        
+        <div id="errorMessage" class="error-message"></div>
+        <div id="successMessage" class="success-message"></div>
+        
+        <div class="admin-content">
+            <h2>Registered Users</h2>
+            <div id="usersTableContainer">
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <tr>
+                            <td colspan="5" style="text-align: center;">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="admin-content" style="margin-top: 3rem;">
+            <h2>Member Stories</h2>
+            <div id="membersTableContainer">
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Favorite Song</th>
+                            <th>Story Preview</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="membersTableBody">
+                        <tr>
+                            <td colspan="5" style="text-align: center;">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Edit Member Modal -->
+        <div id="editMemberModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h2>Edit Member Story</h2>
+                <form id="editMemberForm">
+                    <input type="hidden" id="editMemberId">
+                    <div class="form-group">
+                        <label for="editFirstName">First Name:</label>
+                        <input type="text" id="editFirstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editLastName">Last Name:</label>
+                        <input type="text" id="editLastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editFavoriteSong">Favorite Song:</label>
+                        <input type="text" id="editFavoriteSong" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editStory">Story:</label>
+                        <textarea id="editStory" rows="6" required></textarea>
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="submit" class="btn-save">Save Changes</button>
+                        <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 The Male Swiftie Sanctuary — All Feelings Reserved</p>
+    </footer>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+
+        // Check admin authentication
+        async function checkAdminAuth() {
+            try {
+                const response = await fetch(`${API_URL}/auth/status`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                if (!data.authenticated || data.role !== 'admin') {
+                    window.location.href = '../index.html';
+                    return false;
+                }
+                
+                return true;
+            } catch (error) {
+                console.error('Error checking auth:', error);
+                window.location.href = '../index.html';
+                return false;
+            }
+        }
+
+        // Logout handler
+        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+                await fetch(`${API_URL}/logout`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                window.location.href = '../index.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        });
+
+        // Load users
+        async function loadUsers() {
+            try {
+                const response = await fetch(`${API_URL}/users`, {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch users');
+                }
+                
+                const users = await response.json();
+                const tbody = document.getElementById('usersTableBody');
+                
+                if (users.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No users found</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = '';
+                users.forEach(user => {
+                    const tr = document.createElement('tr');
+                    const createdDate = new Date(user.created_at).toLocaleDateString();
+                    
+                    tr.innerHTML = `
+                        <td>${user.username}</td>
+                        <td>${user.email}</td>
+                        <td><span class="role-badge role-${user.role}">${user.role}</span></td>
+                        <td>${createdDate}</td>
+                        <td>
+                            ${user.role !== 'admin' ? `<button class="btn-delete" onclick="deleteUser(${user.id}, '${user.username}')">Delete</button>` : '<span style="color: #999;">—</span>'}
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error('Error loading users:', error);
+                document.getElementById('errorMessage').textContent = 'Failed to load users';
+            }
+        }
+
+        // Delete user
+        async function deleteUser(userId, username) {
+            if (!confirm(`Are you sure you want to delete user "${username}"?`)) {
+                return;
+            }
+            
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+            errorMessage.textContent = '';
+            successMessage.textContent = '';
+            
+            try {
+                const response = await fetch(`${API_URL}/users/${userId}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    successMessage.textContent = data.message;
+                    loadUsers(); // Reload the list
+                } else {
+                    errorMessage.textContent = data.error || 'Failed to delete user';
+                }
+            } catch (error) {
+                console.error('Error deleting user:', error);
+                errorMessage.textContent = 'An error occurred while deleting the user';
+            }
+        }
+
+        // Make deleteUser available globally
+        window.deleteUser = deleteUser;
+
+        // Load members
+        async function loadMembers() {
+            try {
+                const response = await fetch(`${API_URL}/members`, {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch members');
+                }
+                
+                const members = await response.json();
+                const tbody = document.getElementById('membersTableBody');
+                
+                if (members.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No member stories yet</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = '';
+                members.forEach(member => {
+                    const tr = document.createElement('tr');
+                    const createdDate = new Date(member.created_at).toLocaleDateString();
+                    const story = member.story || 'No story';
+                    const storyPreview = story.length > 80 ? story.substring(0, 80) + '...' : story;
+                    
+                    tr.innerHTML = `
+                        <td>${member.first_name || 'N/A'} ${member.last_name || ''}</td>
+                        <td>${member.favorite_song || 'N/A'}</td>
+                        <td style="font-size: 0.9em;">${storyPreview}</td>
+                        <td>${createdDate}</td>
+                        <td>
+                            <button class="btn-edit" onclick="editMember(${member.id})">Edit</button>
+                            <button class="btn-delete" onclick="deleteMember(${member.id}, '${member.first_name || 'member'} ${member.last_name || ''}')">Delete</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error('Error loading members:', error);
+                document.getElementById('errorMessage').textContent = 'Failed to load members';
+            }
+        }
+
+        // Edit member
+        async function editMember(memberId) {
+            try {
+                const response = await fetch(`${API_URL}/members`, {
+                    credentials: 'include'
+                });
+                const members = await response.json();
+                const member = members.find(m => m.id === memberId);
+                
+                if (member) {
+                    document.getElementById('editMemberId').value = member.id;
+                    document.getElementById('editFirstName').value = member.first_name;
+                    document.getElementById('editLastName').value = member.last_name;
+                    document.getElementById('editFavoriteSong').value = member.favorite_song;
+                    document.getElementById('editStory').value = member.story;
+                    document.getElementById('editMemberModal').style.display = 'flex';
+                }
+            } catch (error) {
+                console.error('Error loading member:', error);
+                document.getElementById('errorMessage').textContent = 'Failed to load member details';
+            }
+        }
+
+        // Close edit modal
+        function closeEditModal() {
+            document.getElementById('editMemberModal').style.display = 'none';
+        }
+
+        // Save member changes
+        document.getElementById('editMemberForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+            errorMessage.textContent = '';
+            successMessage.textContent = '';
+            
+            const memberId = document.getElementById('editMemberId').value;
+            const memberData = {
+                first_name: document.getElementById('editFirstName').value,
+                last_name: document.getElementById('editLastName').value,
+                favorite_song: document.getElementById('editFavoriteSong').value,
+                story: document.getElementById('editStory').value
+            };
+            
+            console.log('Sending update request for member ID:', memberId);
+            console.log('Member data:', memberData);
+            
+            try {
+                const response = await fetch(`${API_URL}/members/${memberId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(memberData)
+                });
+                
+                console.log('Response status:', response.status);
+                
+                const data = await response.json();
+                console.log('Response data:', data);
+                
+                if (response.ok) {
+                    successMessage.textContent = 'Member updated successfully!';
+                    closeEditModal();
+                    loadMembers();
+                } else {
+                    errorMessage.textContent = data.error || `Failed to update member (Status: ${response.status})`;
+                }
+            } catch (error) {
+                console.error('Error updating member:', error);
+                errorMessage.textContent = 'An error occurred while updating the member: ' + error.message;
+            }
+        });
+
+        // Delete member
+        async function deleteMember(memberId, memberName) {
+            if (!confirm(`Are you sure you want to delete the story by "${memberName}"?`)) {
+                return;
+            }
+            
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+            errorMessage.textContent = '';
+            successMessage.textContent = '';
+            
+            try {
+                const response = await fetch(`${API_URL}/members/${memberId}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    successMessage.textContent = data.message;
+                    loadMembers();
+                } else {
+                    errorMessage.textContent = data.error || 'Failed to delete member';
+                }
+            } catch (error) {
+                console.error('Error deleting member:', error);
+                errorMessage.textContent = 'An error occurred while deleting the member';
+            }
+        }
+
+        // Make functions available globally
+        window.editMember = editMember;
+        window.deleteMember = deleteMember;
+        window.closeEditModal = closeEditModal;
+
+        // Initialize
+        checkAdminAuth().then(isAdmin => {
+            if (isAdmin) {
+                loadUsers();
+                loadMembers();
+            }
+        });
+    </script>
+
+    <script src="../extra.js"></script>
+</body>
+</html>

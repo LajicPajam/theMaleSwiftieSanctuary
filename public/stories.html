@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Member Stories | The Male Swiftie Sanctuary</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="script.html">Join Us</a></li>
+      <li><a href="pages/about.html">About</a></li>
+      <li id="adminNavItem" style="display: none;"><a href="pages/admin.html">Admin</a></li>
+      <li id="logoutNavItem" style="display: none;"><a href="#" id="logoutBtn">Logout</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <h1>Member Stories</h1>
+    <h2>Tales of Heartbreak, Healing, and Taylor</h2>
+  </header>
+
+  <section class="story-page">
+    <div class="story-container">
+      <div id="storyContent">
+        <p style="text-align: center; color: #d8aee7;">Loading story...</p>
+      </div>
+    </div>
+  </section>
+
+  <div style="text-align: center; padding: 3rem 0;">
+    <a href="script.html" class="back-home-btn">← Back to Members</a>
+  </div>
+
+  <footer>
+    <p>© 2025 The Male Swiftie Sanctuary — All Feelings Reserved</p>
+  </footer>
+
+  <script>
+    const API_URL = 'http://localhost:3000/api';
+    const storyContent = document.getElementById('storyContent');
+
+    async function loadStory() {
+      // Get member identifier from URL parameters (email or first/last name)
+      const urlParams = new URLSearchParams(window.location.search);
+      const email = urlParams.get('email');
+      const firstName = urlParams.get('first');
+      const lastName = urlParams.get('last');
+
+      if (!email && (!firstName || !lastName)) {
+        storyContent.innerHTML = '<p style="text-align: center; color: #ff7fe9;">No member selected. Please go back and select a member.</p>';
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/members`);
+        const members = await response.json();
+        
+        // Find member by email (if available) or by first/last name
+        const member = email 
+          ? members.find(m => m.email === email)
+          : members.find(m => m.first_name === firstName && m.last_name === lastName);
+
+        if (!member) {
+          storyContent.innerHTML = '<p style="text-align: center; color: #ff7fe9;">Member not found.</p>';
+          return;
+        }
+
+        storyContent.innerHTML = `
+          <div class="story-header">
+            <h3>${member.first_name} ${member.last_name}</h3>
+            <p class="story-meta">
+              <span class="favorite-song">💜 Favorite Song: <em>${member.favorite_song}</em></span>
+            </p>
+          </div>
+          <div class="story-body">
+            <h4>Why I Joined the Sanctuary</h4>
+            <p>${member.story || 'No story available.'}</p>
+          </div>
+        `;
+      } catch (error) {
+        console.error('Error loading story:', error);
+        storyContent.innerHTML = '<p style="text-align: center; color: #ff7fe9;">Failed to load story. Is the server running?</p>';
+      }
+    }
+
+    loadStory();
+    
+    // Check if user is admin to show admin link and logout button
+    async function checkAuthStatus() {
+      try {
+        const response = await fetch(`${API_URL}/auth/status`, {
+          credentials: 'include'
+        });
+        const data = await response.json();
+        
+        if (data.authenticated) {
+          document.getElementById('logoutNavItem').style.display = 'block';
+          if (data.role === 'admin') {
+            document.getElementById('adminNavItem').style.display = 'block';
+          }
+        }
+      } catch (error) {
+        console.log('Not authenticated');
+      }
+    }
+    
+    // Logout handler
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+          await fetch(`${API_URL}/logout`, {
+            method: 'POST',
+            credentials: 'include'
+          });
+          window.location.replace('pages/login.html');
+        } catch (error) {
+          console.error('Logout error:', error);
+        }
+      });
+    }
+    
+    checkAuthStatus();
+  </script>
+
+  <script src="extra.js"></script>
+</body>
+</html>

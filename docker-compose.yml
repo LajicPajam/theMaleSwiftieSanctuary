@@ -10,37 +10,35 @@ services:
       - NODE_ENV=production
       - PORT=3000
       - DB_USER=${DB_USER}
-      - DB_HOST=${DB_HOST}
+      - DB_HOST=db
       - DB_NAME=${DB_NAME}
       - DB_PASSWORD=${DB_PASSWORD}
-      - DB_PORT=${DB_PORT}
+      - DB_PORT=5432
       - SESSION_SECRET=${SESSION_SECRET}
     restart: unless-stopped
-    # Uncomment the lines below if using the local PostgreSQL container
-    # depends_on:
-    #   - db
-    # networks:
-    #   - swiftie-network
+    depends_on:
+      - db
+    networks:
+      - swiftie-network
 
-  # Optional: Local PostgreSQL database
-  # Remove the comments below to run PostgreSQL in Docker instead of using Neon
-  # db:
-  #   image: postgres:15-alpine
-  #   environment:
-  #     - POSTGRES_USER=${DB_USER:-swiftie}
-  #     - POSTGRES_PASSWORD=${DB_PASSWORD:-changeme}
-  #     - POSTGRES_DB=${DB_NAME:-SwiftieSanctuary}
-  #   volumes:
-  #     - postgres-data:/var/lib/postgresql/data
-  #   ports:
-  #     - "5432:5432"
-  #   restart: unless-stopped
-  #   networks:
-  #     - swiftie-network
+  # PostgreSQL database
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=${DB_USER:-swiftie}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-changeme}
+      - POSTGRES_DB=${DB_NAME:-SwiftieSanctuary}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    networks:
+      - swiftie-network
 
-# volumes:
-#   postgres-data:
+volumes:
+  postgres-data:
 
-# networks:
-#   swiftie-network:
-#     driver: bridge
+networks:
+  swiftie-network:
+    driver: bridge

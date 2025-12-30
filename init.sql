@@ -1,6 +1,15 @@
 -- Migration script to set up database schema
 -- Run this when starting with a fresh PostgreSQL database
 
+-- Create session table for connect-pg-simple
+CREATE TABLE IF NOT EXISTS "session" (
+  "sid" varchar NOT NULL COLLATE "default",
+  "sess" json NOT NULL,
+  "expire" timestamp(6) NOT NULL,
+  CONSTRAINT "session_pkey" PRIMARY KEY ("sid")
+);
+CREATE INDEX IF NOT EXISTS "IDX_session_expire" ON "session" ("expire");
+
 -- Create users table
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
@@ -25,8 +34,6 @@ CREATE TABLE IF NOT EXISTS members (
 -- Create indexes for performance
 CREATE INDEX IF NOT EXISTS idx_members_user_id ON members(user_id);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_members_user_id_unique ON members(user_id) WHERE user_id IS NOT NULL;
-
--- Session table will be auto-created by connect-pg-simple
 
 -- Create an admin user (password is 'admin123' - CHANGE THIS!)
 -- Password hash for 'admin123' with bcrypt salt rounds 10

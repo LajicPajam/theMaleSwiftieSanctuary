@@ -125,11 +125,19 @@ app.post('/api/login', async (req, res) => {
     req.session.username = user.username;
     req.session.role = user.role;
 
-    res.json({
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      role: user.role
+    // Save session before responding
+    req.session.save((err) => {
+      if (err) {
+        console.error('Session save error:', err);
+        return res.status(500).json({ error: 'Session error' });
+      }
+      
+      res.json({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role
+      });
     });
   } catch (error) {
     console.error('Error during login:', error);

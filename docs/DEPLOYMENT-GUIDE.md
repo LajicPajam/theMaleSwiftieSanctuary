@@ -30,8 +30,8 @@ cd theMaleSwiftieSanctuary
 **Create your environment file:**
 
 ```bash
-# Copy the example file
-cp .env.docker .env
+# Copy the example file from config folder
+cp config/.env.docker .env
 
 # Edit it with your favorite editor (nano is easiest)
 nano .env
@@ -82,7 +82,7 @@ You should see 2 containers running! ✅
 
 ```bash
 # This runs the SQL commands to create tables
-docker exec -i themaleswiftiesanctuary-db-1 psql -U swiftie -d SwiftieSanctuary < init.sql
+docker exec -i themaleswiftiesanctuary-db-1 psql -U swiftie -d SwiftieSanctuary < config/init.sql
 ```
 
 **What did that do?**

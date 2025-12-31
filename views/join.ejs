@@ -1,0 +1,433 @@
+<style>
+  #formContainer,
+  #loginContainer {
+    display: none;
+  }
+  #loginContainer.visible,
+  #formContainer.visible {
+    display: block;
+  }
+  textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ffb0e9;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-size: 1em;
+    font-family: 'Roboto Condensed', sans-serif;
+    box-sizing: border-box;
+    resize: vertical;
+  }
+  textarea:focus {
+    outline: none;
+    border-color: #ff7fe9;
+    box-shadow: 0 0 10px rgba(255, 180, 240, 0.5);
+  }
+</style>
+
+<header>
+  <h1>The Male Swiftie Sanctuary</h1>
+  <h2>Join the Brotherhood of Broken Hearts</h2>
+</header>
+
+<section class="join">
+  <div class="form-container" id="loginContainer">
+    <h3>Become a Member</h3>
+    <p style="color: #d8aee7; text-align: center; margin-bottom: 1.5rem; line-height: 1.6;">Please log in to share your story and join our brotherhood of Swifties.</p>
+    <button onclick="window.location.href='/login?redirect=' + encodeURIComponent(window.location.pathname)">Login to Join</button>
+  </div>
+
+  <div class="form-container" id="formContainer">
+    <h3>Become a Member</h3>
+    <form id="joinForm">
+      <label for="firstName">First Name</label>
+      <input type="text" id="firstName" name="firstName" required />
+
+      <label for="lastName">Last Name</label>
+      <input type="text" id="lastName" name="lastName" required />
+
+      <label for="song">Favorite Taylor Swift Song</label>
+      <select id="song" name="song" required>
+        <option value="">-- Select a song --</option>
+        
+        <optgroup label="Taylor Swift (2006)">
+          <option value="Tim McGraw">Tim McGraw</option>
+          <option value="Picture to Burn">Picture to Burn</option>
+          <option value="Teardrops on My Guitar">Teardrops on My Guitar</option>
+          <option value="A Place in This World">A Place in This World</option>
+          <option value="Cold as You">Cold as You</option>
+          <option value="The Outside">The Outside</option>
+          <option value="Tied Together with a Smile">Tied Together with a Smile</option>
+          <option value="Stay Beautiful">Stay Beautiful</option>
+          <option value="Should've Said No">Should've Said No</option>
+          <option value="Mary's Song (Oh My My My)">Mary's Song (Oh My My My)</option>
+          <option value="Our Song">Our Song</option>
+          <option value="I'm Only Me When I'm with You">I'm Only Me When I'm with You</option>
+          <option value="Invisible">Invisible</option>
+          <option value="A Perfectly Good Heart">A Perfectly Good Heart</option>
+        </optgroup>
+        
+        <optgroup label="Fearless (Taylor's Version) (2021)">
+          <option value="Fearless (Taylor's Version)">Fearless (Taylor's Version)</option>
+          <option value="Fifteen (Taylor's Version)">Fifteen (Taylor's Version)</option>
+          <option value="Love Story (Taylor's Version)">Love Story (Taylor's Version)</option>
+          <option value="Hey Stephen (Taylor's Version)">Hey Stephen (Taylor's Version)</option>
+          <option value="White Horse (Taylor's Version)">White Horse (Taylor's Version)</option>
+          <option value="You Belong With Me (Taylor's Version)">You Belong With Me (Taylor's Version)</option>
+          <option value="Breathe (Taylor's Version)">Breathe (feat. Colbie Caillat) (Taylor's Version)</option>
+          <option value="Tell Me Why (Taylor's Version)">Tell Me Why (Taylor's Version)</option>
+          <option value="You're Not Sorry (Taylor's Version)">You're Not Sorry (Taylor's Version)</option>
+          <option value="The Way I Loved You (Taylor's Version)">The Way I Loved You (Taylor's Version)</option>
+          <option value="Forever & Always (Taylor's Version)">Forever & Always (Taylor's Version)</option>
+          <option value="The Best Day (Taylor's Version)">The Best Day (Taylor's Version)</option>
+          <option value="Change (Taylor's Version)">Change (Taylor's Version)</option>
+          <option value="Jump Then Fall (Taylor's Version)">Jump Then Fall (Taylor's Version)</option>
+          <option value="Untouchable (Taylor's Version)">Untouchable (Taylor's Version)</option>
+          <option value="Forever & Always (Piano Version) (Taylor's Version)">Forever & Always (Piano Version) (Taylor's Version)</option>
+          <option value="Come In With the Rain (Taylor's Version)">Come In With the Rain (Taylor's Version)</option>
+          <option value="Superstar (Taylor's Version)">Superstar (Taylor's Version)</option>
+          <option value="The Other Side of the Door (Taylor's Version)">The Other Side of the Door (Taylor's Version)</option>
+          <option value="Today Was a Fairytale (Taylor's Version)">Today Was a Fairytale (Taylor's Version)</option>
+          <option value="You All Over Me (From The Vault)">You All Over Me (feat. Maren Morris) (From The Vault)</option>
+          <option value="Mr. Perfectly Fine (From The Vault)">Mr. Perfectly Fine (From The Vault)</option>
+          <option value="We Were Happy (From The Vault)">We Were Happy (From The Vault)</option>
+          <option value="That's When (From The Vault)">That's When (feat. Keith Urban) (From The Vault)</option>
+          <option value="Don't You (From The Vault)">Don't You (From The Vault)</option>
+          <option value="Bye Bye Baby (From The Vault)">Bye Bye Baby (From The Vault)</option>
+        </optgroup>
+        
+        <optgroup label="Speak Now (Taylor's Version) (2023)">
+          <option value="Mine (Taylor's Version)">Mine (Taylor's Version)</option>
+          <option value="Sparks Fly (Taylor's Version)">Sparks Fly (Taylor's Version)</option>
+          <option value="Back to December (Taylor's Version)">Back to December (Taylor's Version)</option>
+          <option value="Speak Now (Taylor's Version)">Speak Now (Taylor's Version)</option>
+          <option value="Dear John (Taylor's Version)">Dear John (Taylor's Version)</option>
+          <option value="Mean (Taylor's Version)">Mean (Taylor's Version)</option>
+          <option value="The Story of Us (Taylor's Version)">The Story of Us (Taylor's Version)</option>
+          <option value="Never Grow Up (Taylor's Version)">Never Grow Up (Taylor's Version)</option>
+          <option value="Enchanted (Taylor's Version)">Enchanted (Taylor's Version)</option>
+          <option value="Better Than Revenge (Taylor's Version)">Better Than Revenge (Taylor's Version)</option>
+          <option value="Innocent (Taylor's Version)">Innocent (Taylor's Version)</option>
+          <option value="Haunted (Taylor's Version)">Haunted (Taylor's Version)</option>
+          <option value="Last Kiss (Taylor's Version)">Last Kiss (Taylor's Version)</option>
+          <option value="Long Live (Taylor's Version)">Long Live (Taylor's Version)</option>
+          <option value="Ours (Taylor's Version)">Ours (Taylor's Version)</option>
+          <option value="Superman (Taylor's Version)">Superman (Taylor's Version)</option>
+          <option value="Electric Touch (From The Vault)">Electric Touch (feat. Fall Out Boy) (From The Vault)</option>
+          <option value="When Emma Falls in Love (From The Vault)">When Emma Falls in Love (From The Vault)</option>
+          <option value="I Can See You (From The Vault)">I Can See You (From The Vault)</option>
+          <option value="Castles Crumbling (From The Vault)">Castles Crumbling (feat. Hayley Williams) (From The Vault)</option>
+          <option value="Foolish One (From The Vault)">Foolish One (From The Vault)</option>
+          <option value="Timeless (From The Vault)">Timeless (From The Vault)</option>
+        </optgroup>
+        
+        <optgroup label="Red (Taylor's Version) (2021)">
+          <option value="State of Grace (Taylor's Version)">State of Grace (Taylor's Version)</option>
+          <option value="Red (Taylor's Version)">Red (Taylor's Version)</option>
+          <option value="Treacherous (Taylor's Version)">Treacherous (Taylor's Version)</option>
+          <option value="I Knew You Were Trouble (Taylor's Version)">I Knew You Were Trouble (Taylor's Version)</option>
+          <option value="All Too Well (Taylor's Version)">All Too Well (Taylor's Version)</option>
+          <option value="22 (Taylor's Version)">22 (Taylor's Version)</option>
+          <option value="I Almost Do (Taylor's Version)">I Almost Do (Taylor's Version)</option>
+          <option value="We Are Never Getting Back Together (Taylor's Version)">We Are Never Getting Back Together (Taylor's Version)</option>
+          <option value="Stay Stay Stay (Taylor's Version)">Stay Stay Stay (Taylor's Version)</option>
+          <option value="The Last Time (Taylor's Version)">The Last Time (feat. Gary Lightbody) (Taylor's Version)</option>
+          <option value="Holy Ground (Taylor's Version)">Holy Ground (Taylor's Version)</option>
+          <option value="Sad Beautiful Tragic (Taylor's Version)">Sad Beautiful Tragic (Taylor's Version)</option>
+          <option value="The Lucky One (Taylor's Version)">The Lucky One (Taylor's Version)</option>
+          <option value="Everything Has Changed (Taylor's Version)">Everything Has Changed (feat. Ed Sheeran) (Taylor's Version)</option>
+          <option value="Starlight (Taylor's Version)">Starlight (Taylor's Version)</option>
+          <option value="Begin Again (Taylor's Version)">Begin Again (Taylor's Version)</option>
+          <option value="The Moment I Knew (Taylor's Version)">The Moment I Knew (Taylor's Version)</option>
+          <option value="Come Back...Be Here (Taylor's Version)">Come Back...Be Here (Taylor's Version)</option>
+          <option value="Girl at Home (Taylor's Version)">Girl at Home (Taylor's Version)</option>
+          <option value="State of Grace (Acoustic Version) (Taylor's Version)">State of Grace (Acoustic Version) (Taylor's Version)</option>
+          <option value="Ronan (Taylor's Version)">Ronan (Taylor's Version)</option>
+          <option value="Better Man (From The Vault)">Better Man (From The Vault)</option>
+          <option value="Nothing New (From The Vault)">Nothing New (feat. Phoebe Bridgers) (From The Vault)</option>
+          <option value="Babe (From The Vault)">Babe (From The Vault)</option>
+          <option value="Message in a Bottle (From The Vault)">Message in a Bottle (From The Vault)</option>
+          <option value="I Bet You Think About Me (From The Vault)">I Bet You Think About Me (feat. Chris Stapleton) (From The Vault)</option>
+          <option value="Forever Winter (From The Vault)">Forever Winter (From The Vault)</option>
+          <option value="Run (From The Vault)">Run (feat. Ed Sheeran) (From The Vault)</option>
+          <option value="The Very First Night (From The Vault)">The Very First Night (From The Vault)</option>
+          <option value="All Too Well (10 Minute Version) (Taylor's Version)">All Too Well (10 Minute Version) (Taylor's Version) ❤️</option>
+        </optgroup>
+        
+        <optgroup label="1989 (Taylor's Version) (2023)">
+          <option value="Welcome to New York (Taylor's Version)">Welcome to New York (Taylor's Version)</option>
+          <option value="Blank Space (Taylor's Version)">Blank Space (Taylor's Version)</option>
+          <option value="Style (Taylor's Version)">Style (Taylor's Version)</option>
+          <option value="Out of the Woods (Taylor's Version)">Out of the Woods (Taylor's Version)</option>
+          <option value="All You Had to Do Was Stay (Taylor's Version)">All You Had to Do Was Stay (Taylor's Version)</option>
+          <option value="Shake It Off (Taylor's Version)">Shake It Off (Taylor's Version)</option>
+          <option value="I Wish You Would (Taylor's Version)">I Wish You Would (Taylor's Version)</option>
+          <option value="Bad Blood (Taylor's Version)">Bad Blood (Taylor's Version)</option>
+          <option value="Wildest Dreams (Taylor's Version)">Wildest Dreams (Taylor's Version)</option>
+          <option value="How You Get the Girl (Taylor's Version)">How You Get the Girl (Taylor's Version)</option>
+          <option value="This Love (Taylor's Version)">This Love (Taylor's Version)</option>
+          <option value="I Know Places (Taylor's Version)">I Know Places (Taylor's Version)</option>
+          <option value="Clean (Taylor's Version)">Clean (Taylor's Version)</option>
+          <option value="Wonderland (Taylor's Version)">Wonderland (Taylor's Version)</option>
+          <option value="You Are in Love (Taylor's Version)">You Are in Love (Taylor's Version)</option>
+          <option value="New Romantics (Taylor's Version)">New Romantics (Taylor's Version)</option>
+          <option value="Slut! (From The Vault)">Slut! (From The Vault)</option>
+          <option value="Say Don't Go (From The Vault)">Say Don't Go (From The Vault)</option>
+          <option value="Now That We Don't Talk (From The Vault)">Now That We Don't Talk (From The Vault)</option>
+          <option value="Suburban Legends (From The Vault)">Suburban Legends (From The Vault)</option>
+          <option value="Is It Over Now? (From The Vault)">Is It Over Now? (From The Vault)</option>
+        </optgroup>
+        
+        <optgroup label="Reputation (2017)">
+          <option value="...Ready For It?">...Ready For It?</option>
+          <option value="End Game">End Game (feat. Ed Sheeran & Future)</option>
+          <option value="I Did Something Bad">I Did Something Bad</option>
+          <option value="Don't Blame Me">Don't Blame Me</option>
+          <option value="Delicate">Delicate</option>
+          <option value="Look What You Made Me Do">Look What You Made Me Do</option>
+          <option value="So It Goes...">So It Goes...</option>
+          <option value="Gorgeous">Gorgeous</option>
+          <option value="Getaway Car">Getaway Car</option>
+          <option value="King of My Heart">King of My Heart</option>
+          <option value="Dancing with Our Hands Tied">Dancing with Our Hands Tied</option>
+          <option value="Dress">Dress</option>
+          <option value="This Is Why We Can't Have Nice Things">This Is Why We Can't Have Nice Things</option>
+          <option value="Call It What You Want">Call It What You Want</option>
+          <option value="New Year's Day">New Year's Day</option>
+        </optgroup>
+        
+        <optgroup label="Lover (2019)">
+          <option value="I Forgot That You Existed">I Forgot That You Existed</option>
+          <option value="Cruel Summer">Cruel Summer</option>
+          <option value="Lover">Lover</option>
+          <option value="The Man">The Man</option>
+          <option value="The Archer">The Archer</option>
+          <option value="I Think He Knows">I Think He Knows</option>
+          <option value="Miss Americana & the Heartbreak Prince">Miss Americana & the Heartbreak Prince</option>
+          <option value="Paper Rings">Paper Rings</option>
+          <option value="Cornelia Street">Cornelia Street</option>
+          <option value="Death By a Thousand Cuts">Death By a Thousand Cuts</option>
+          <option value="London Boy">London Boy</option>
+          <option value="Soon You'll Get Better">Soon You'll Get Better (feat. The Chicks)</option>
+          <option value="False God">False God</option>
+          <option value="You Need to Calm Down">You Need to Calm Down</option>
+          <option value="Afterglow">Afterglow</option>
+          <option value="ME!">ME! (feat. Brendon Urie)</option>
+          <option value="It's Nice to Have a Friend">It's Nice to Have a Friend</option>
+          <option value="Daylight">Daylight</option>
+        </optgroup>
+        
+        <optgroup label="Folklore (2020)">
+          <option value="the 1">the 1</option>
+          <option value="cardigan">cardigan</option>
+          <option value="the last great american dynasty">the last great american dynasty</option>
+          <option value="exile">exile (feat. Bon Iver)</option>
+          <option value="my tears ricochet">my tears ricochet</option>
+          <option value="mirrorball">mirrorball</option>
+          <option value="seven">seven</option>
+          <option value="august">august</option>
+          <option value="this is me trying">this is me trying</option>
+          <option value="illicit affairs">illicit affairs</option>
+          <option value="invisible string">invisible string</option>
+          <option value="mad woman">mad woman</option>
+          <option value="epiphany">epiphany</option>
+          <option value="betty">betty</option>
+          <option value="peace">peace</option>
+          <option value="hoax">hoax</option>
+          <option value="the lakes">the lakes (bonus track)</option>
+        </optgroup>
+        
+        <optgroup label="Evermore (2020)">
+          <option value="willow">willow</option>
+          <option value="champagne problems">champagne problems</option>
+          <option value="gold rush">gold rush</option>
+          <option value="'tis the damn season">'tis the damn season</option>
+          <option value="tolerate it">tolerate it</option>
+          <option value="no body, no crime">no body, no crime (feat. HAIM)</option>
+          <option value="happiness">happiness</option>
+          <option value="dorothea">dorothea</option>
+          <option value="coney island">coney island (feat. The National)</option>
+          <option value="ivy">ivy</option>
+          <option value="cowboy like me">cowboy like me</option>
+          <option value="long story short">long story short</option>
+          <option value="marjorie">marjorie</option>
+          <option value="closure">closure</option>
+          <option value="evermore">evermore (feat. Bon Iver)</option>
+          <option value="right where you left me">right where you left me (bonus track)</option>
+          <option value="it's time to go">it's time to go (bonus track)</option>
+        </optgroup>
+        
+        <optgroup label="Midnights (2022)">
+          <option value="Lavender Haze">Lavender Haze</option>
+          <option value="Maroon">Maroon</option>
+          <option value="Anti-Hero">Anti-Hero</option>
+          <option value="Snow on the Beach">Snow on the Beach (feat. Lana Del Rey)</option>
+          <option value="You're On Your Own, Kid">You're On Your Own, Kid</option>
+          <option value="Midnight Rain">Midnight Rain</option>
+          <option value="Question...?">Question...?</option>
+          <option value="Vigilante Shit">Vigilante Shit</option>
+          <option value="Bejeweled">Bejeweled</option>
+          <option value="Labyrinth">Labyrinth</option>
+          <option value="Karma">Karma</option>
+          <option value="Sweet Nothing">Sweet Nothing</option>
+          <option value="Mastermind">Mastermind</option>
+          <option value="The Great War">The Great War (3am Edition)</option>
+          <option value="Bigger Than the Whole Sky">Bigger Than the Whole Sky (3am Edition)</option>
+          <option value="Paris">Paris (3am Edition)</option>
+          <option value="High Infidelity">High Infidelity (3am Edition)</option>
+          <option value="Glitch">Glitch (3am Edition)</option>
+          <option value="Would've, Could've, Should've">Would've, Could've, Should've (3am Edition)</option>
+          <option value="Dear Reader">Dear Reader (3am Edition)</option>
+          <option value="Hits Different">Hits Different (bonus track)</option>
+        </optgroup>
+        
+        <optgroup label="The Tortured Poets Department (2024)">
+          <option value="Fortnight">Fortnight (feat. Post Malone)</option>
+          <option value="The Tortured Poets Department">The Tortured Poets Department</option>
+          <option value="My Boy Only Breaks His Favorite Toys">My Boy Only Breaks His Favorite Toys</option>
+          <option value="Down Bad">Down Bad</option>
+          <option value="So Long, London">So Long, London</option>
+          <option value="But Daddy I Love Him">But Daddy I Love Him</option>
+          <option value="Fresh Out the Slammer">Fresh Out the Slammer</option>
+          <option value="Florida!!!">Florida!!! (feat. Florence + The Machine)</option>
+          <option value="Guilty as Sin?">Guilty as Sin?</option>
+          <option value="Who's Afraid of Little Old Me?">Who's Afraid of Little Old Me?</option>
+          <option value="I Can Do It With a Broken Heart">I Can Do It With a Broken Heart</option>
+          <option value="The Smallest Man Who Ever Lived">The Smallest Man Who Ever Lived</option>
+          <option value="The Alchemy">The Alchemy</option>
+          <option value="Clara Bow">Clara Bow</option>
+          <option value="The Black Dog">The Black Dog</option>
+          <option value="imgonnagetyouback">imgonnagetyouback</option>
+          <option value="The Albatross">The Albatross</option>
+          <option value="Chloe or Sam or Sophia or Marcus">Chloe or Sam or Sophia or Marcus</option>
+          <option value="How Did It End?">How Did It End?</option>
+          <option value="So High School">So High School</option>
+          <option value="I Hate It Here">I Hate It Here</option>
+          <option value="thanK you aIMee">thanK you aIMee</option>
+          <option value="I Look in People's Windows">I Look in People's Windows</option>
+          <option value="The Prophecy">The Prophecy</option>
+          <option value="Cassandra">Cassandra</option>
+          <option value="Peter">Peter</option>
+          <option value="The Bolter">The Bolter</option>
+          <option value="Robin">Robin</option>
+          <option value="The Manuscript">The Manuscript</option>
+        </optgroup>
+      </select>
+
+      <label for="story">Your Swiftie Story</label>
+      <textarea id="story" name="story" rows="5" placeholder="Share your emotional journey with Taylor's music..." required></textarea>
+
+      <button type="submit">Submit</button>
+    </form>
+    
+    <div id="thankYouContainer" style="display: none; text-align: center; padding: 2rem;">
+      <h3 style="color: #ff7fe9; margin-bottom: 1rem;">Welcome to the Brotherhood! 🎉</h3>
+      <p style="color: #d8aee7; line-height: 1.6; margin-bottom: 1.5rem;">
+        Your story has been shared. You're officially part of the Male Swiftie Sanctuary. 
+        Your vulnerability is your strength here.
+      </p>
+      <button onclick="window.location.href='/'">Return Home</button>
+    </div>
+  </div>
+
+  <div class="member-list">
+    <h3>Current Members</h3>
+    <ul id="memberList">
+      <li>Loading members...</li>
+    </ul>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById("joinForm");
+  const memberList = document.getElementById("memberList");
+  const API_URL = '/api';
+
+  // Check auth and show appropriate form
+  async function checkAuth() {
+    try {
+      const response = await fetch(`${API_URL}/auth/status`, {
+        credentials: 'include'
+      });
+      const data = await response.json();
+      
+      if (data.authenticated) {
+        document.getElementById('formContainer').classList.add('visible');
+      } else {
+        document.getElementById('loginContainer').classList.add('visible');
+      }
+    } catch (error) {
+      console.log('Not authenticated');
+      document.getElementById('loginContainer').classList.add('visible');
+    }
+  }
+
+  // Load members from the database
+  async function loadMembers() {
+    try {
+      const response = await fetch(`${API_URL}/members`);
+      const members = await response.json();
+      
+      memberList.innerHTML = '';
+      members.forEach(member => {
+        const li = document.createElement("li");
+        const storyLink = member.email 
+          ? `/stories?email=${encodeURIComponent(member.email)}`
+          : `/stories?first=${encodeURIComponent(member.first_name)}&last=${encodeURIComponent(member.last_name)}`;
+        
+        li.innerHTML = `
+          <strong>${member.first_name} ${member.last_name}</strong> — <em>${member.favorite_song}</em><br>
+          <a href="${storyLink}" class="story-link">📖 Read my story</a>
+        `;
+        memberList.appendChild(li);
+      });
+    } catch (error) {
+      console.error('Error loading members:', error);
+      memberList.innerHTML = '<li style="color: red;">Failed to load members. Is the server running?</li>';
+    }
+  }
+
+  // Submit form to database
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const firstName = document.getElementById("firstName").value.trim();
+    const lastName = document.getElementById("lastName").value.trim();
+    const song = document.getElementById("song").value.trim();
+    const story = document.getElementById("story").value.trim();
+
+    if (!firstName || !lastName || !song || !story) return;
+
+    try {
+      const response = await fetch(`${API_URL}/members`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ firstName, lastName, song, story })
+      });
+
+      if (response.ok) {
+        form.reset();
+        loadMembers();
+        document.getElementById('formContainer').classList.remove('visible');
+        document.getElementById('thankYouContainer').style.display = 'block';
+      } else {
+        const error = await response.json();
+        alert('Error: ' + (error.error || 'Failed to add member'));
+      }
+    } catch (error) {
+      console.error('Error adding member:', error);
+      alert('Failed to add member. Is the server running?');
+    }
+  });
+
+  checkAuth();
+  loadMembers();
+</script>
+
+<div style="text-align: center; padding: 3rem 0;">
+  <a href="/" class="back-home-btn">← Back to Home</a>
+</div>

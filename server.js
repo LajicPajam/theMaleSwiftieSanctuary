@@ -6,9 +6,16 @@ const path = require('path');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
+const expressLayouts = require('express-ejs-layouts');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Set up EJS
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use(expressLayouts);
+app.set('layout', 'layout');
 
 // PostgreSQL connection pool
 const pool = new Pool({
@@ -58,11 +65,13 @@ app.use(session({
   }
 }));
 
-// Middleware to prevent caching of script.html
-app.use('/script.html', (req, res, next) => {
-  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
-  res.set('Pragma', 'no-cache');
-  res.set('Expires', '0');
+// Middleware to make user session available in all EJS views
+app.use((req, res, next) => {
+  res.locals.user = req.session.userId ? {
+    id: req.session.userId,
+    username: req.session.username,
+    role: req.session.role
+  } : null;
   next();
 });
 
@@ -76,6 +85,81 @@ pool.query('SELECT NOW()', (err, res) => {
     console.log('Database connected successfully');
   }
 });
+
+// ========== VIEW ROUTES ==========
+
+// Homepage
+app.get('/', (req, res) => {
+  res.render('index', { 
+    title: 'The Male Swiftie Sanctuary',
+    page: 'home'
+  });
+});
+
+// Join page
+app.get('/join', (req, res) => {
+  res.render('join', { 
+    title: 'Join Us | The Male Swiftie Sanctuary',
+    page: 'join'
+  });
+});
+
+// About page
+app.get('/about', (req, res) => {
+  res.render('about', { 
+    title: 'About | The Male Swiftie Sanctuary',
+    page: 'about'
+  });
+});
+
+// Login page
+app.get('/login', (req, res) => {
+  res.render('login', { 
+    title: 'Login | The Male Swiftie Sanctuary',
+    page: 'login'
+  });
+});
+
+// Register page
+app.get('/register', (req, res) => {
+  res.render('register', { 
+    title: 'Register | The Male Swiftie Sanctuary',
+    page: 'register'
+  });
+});
+
+// Logout (GET route for easy navigation link)
+app.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Logout error:', err);
+    }
+    res.redirect('/login');
+  });
+});
+
+// Admin page (protected)
+app.get('/admin', (req, res) => {
+  // Check if user is admin
+  if (!req.session || !req.session.userId || req.session.role !== 'admin') {
+    return res.redirect('/login');
+  }
+  
+  res.render('admin', { 
+    title: 'Admin Dashboard | The Male Swiftie Sanctuary',
+    page: 'admin'
+  });
+});
+
+// Stories page
+app.get('/stories', (req, res) => {
+  res.render('stories', { 
+    title: 'Member Stories | The Male Swiftie Sanctuary',
+    page: 'stories'
+  });
+});
+
+// ========== MIDDLEWARE ==========
 
 // Authentication middleware
 const requireAuth = (req, res, next) => {
@@ -343,11 +427,6 @@ app.delete('/api/members/:id', requireAuth, requireAdmin, async (req, res) => {
     console.error('Error deleting member:', error);
     res.status(500).json({ error: 'Failed to delete member' });
   }
-});
-
-// Serve index.html for root path
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.listen(PORT, () => {

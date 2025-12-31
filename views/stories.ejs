@@ -1,0 +1,67 @@
+<header>
+  <h1>Member Stories</h1>
+  <h2>Tales of Heartbreak, Healing, and Taylor</h2>
+</header>
+
+<section class="story-page">
+  <div class="story-container">
+    <div id="storyContent">
+      <p style="text-align: center; color: #d8aee7;">Loading story...</p>
+    </div>
+  </div>
+</section>
+
+<div style="text-align: center; padding: 3rem 0;">
+  <a href="/join" class="back-home-btn">← Back to Members</a>
+</div>
+
+<script>
+  const API_URL = '/api';
+  const storyContent = document.getElementById('storyContent');
+
+  async function loadStory() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const email = urlParams.get('email');
+    const firstName = urlParams.get('first');
+    const lastName = urlParams.get('last');
+
+    if (!email && (!firstName || !lastName)) {
+      storyContent.innerHTML = '<p style="text-align: center; color: #ff7fe9;">No member selected. Please go back and select a member.</p>';
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/members`);
+      const members = await response.json();
+      
+      const member = email 
+        ? members.find(m => m.email === email)
+        : members.find(m => m.first_name === firstName && m.last_name === lastName);
+
+      if (!member) {
+        storyContent.innerHTML = '<p style="text-align: center; color: #ff7fe9;">Member not found.</p>';
+        return;
+      }
+
+      storyContent.innerHTML = `
+        <div class="story-header">
+          <h3>${member.first_name} ${member.last_name}</h3>
+          <p class="story-meta">
+            <span class="favorite-song">💜 Favorite Song: <em>${member.favorite_song}</em></span>
+          </p>
+        </div>
+        <div class="story-body">
+          <h4>Why I Joined the Sanctuary</h4>
+          <p>${member.story || 'No story available.'}</p>
+        </div>
+      `;
+    } catch (error) {
+      console.error('Error loading story:', error);
+      storyContent.innerHTML = '<p style="text-align: center; color: #ff7fe9;">Failed to load story. Is the server running?</p>';
+    }
+  }
+
+  loadStory();
+</script>
+
+<script src="extra.js"></script>

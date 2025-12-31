@@ -1,0 +1,64 @@
+<div class="login-container">
+    <div class="login-box">
+        <h1>Welcome Back</h1>
+        <p class="login-subtitle">Login to access The Sanctuary</p>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <div id="errorMessage" class="error-message"></div>
+            
+            <button type="submit" class="btn-primary">Login</button>
+        </form>
+        
+        <p class="register-prompt">
+            Don't have an account? <a href="/register">Register here</a>
+        </p>
+    </div>
+</div>
+
+<script>
+    const API_URL = '/api';
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const errorMessage = document.getElementById('errorMessage');
+        
+        errorMessage.textContent = '';
+        
+        try {
+            const response = await fetch(`${API_URL}/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({ username, password })
+            });
+            
+            const data = await response.json();
+            
+            if (response.ok) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const redirect = urlParams.get('redirect') || '/join';
+                window.location.href = redirect;
+            } else {
+                errorMessage.textContent = data.error || 'Login failed';
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            errorMessage.textContent = 'An error occurred. Please try again.';
+        }
+    });
+</script>

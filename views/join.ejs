@@ -353,7 +353,18 @@
       const data = await response.json();
       
       if (data.authenticated) {
-        document.getElementById('formContainer').classList.add('visible');
+        // Check if user already has a story
+        const membersResponse = await fetch(`${API_URL}/members`);
+        const members = await membersResponse.json();
+        const userHasStory = members.some(member => member.user_id === data.userId);
+        
+        if (userHasStory) {
+          // Show thank you message
+          document.getElementById('thankYouContainer').style.display = 'block';
+        } else {
+          // Show the form
+          document.getElementById('formContainer').classList.add('visible');
+        }
       } else {
         document.getElementById('loginContainer').classList.add('visible');
       }

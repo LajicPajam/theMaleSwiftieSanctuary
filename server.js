@@ -32,8 +32,9 @@ const pool = new Pool({
 // Middleware
 const allowedOrigins = [
   'http://localhost:3000',
+  process.env.TUNNEL_URL,
   process.env.RENDER_EXTERNAL_URL || 'https://themaleswiftiesanctuary.onrender.com'
-];
+].filter(Boolean);
 
 app.use(cors({
   origin: function(origin, callback) {

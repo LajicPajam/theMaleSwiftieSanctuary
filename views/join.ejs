@@ -39,13 +39,14 @@
   </div>
 
   <div class="form-container" id="formContainer">
-    <h3>Become a Member</h3>
-    <form id="joinForm">
-      <label for="firstName">First Name</label>
-      <input type="text" id="firstName" name="firstName" required />
+    <div id="storyForm">
+      <h3>Become a Member</h3>
+      <form id="joinForm">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="firstName" required />
 
-      <label for="lastName">Last Name</label>
-      <input type="text" id="lastName" name="lastName" required />
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" name="lastName" required />
 
       <label for="song">Favorite Taylor Swift Song</label>
       <select id="song" name="song" required>
@@ -320,6 +321,7 @@
 
       <button type="submit">Submit</button>
     </form>
+    </div>
     
     <div id="thankYouContainer" style="display: none; text-align: center; padding: 2rem;">
       <h3 style="color: #ff7fe9; margin-bottom: 1rem;">Welcome to the Brotherhood! 🎉</h3>
@@ -353,17 +355,21 @@
       const data = await response.json();
       
       if (data.authenticated) {
+        document.getElementById('formContainer').classList.add('visible');
+        
         // Check if user already has a story
         const membersResponse = await fetch(`${API_URL}/members`);
         const members = await membersResponse.json();
         const userHasStory = members.some(member => member.user_id === data.userId);
         
         if (userHasStory) {
-          // Show thank you message
+          // Hide form, show thank you message
+          document.getElementById('storyForm').style.display = 'none';
           document.getElementById('thankYouContainer').style.display = 'block';
         } else {
           // Show the form
-          document.getElementById('formContainer').classList.add('visible');
+          document.getElementById('storyForm').style.display = 'block';
+          document.getElementById('thankYouContainer').style.display = 'none';
         }
       } else {
         document.getElementById('loginContainer').classList.add('visible');
@@ -423,7 +429,8 @@
       if (response.ok) {
         form.reset();
         loadMembers();
-        document.getElementById('formContainer').classList.remove('visible');
+        // Hide the form, show thank you message
+        document.getElementById('storyForm').style.display = 'none';
         document.getElementById('thankYouContainer').style.display = 'block';
       } else {
         const error = await response.json();
